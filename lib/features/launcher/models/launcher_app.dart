@@ -8,6 +8,9 @@ class LauncherApp {
     required this.description,
     required this.icon,
     required this.color,
+    required this.assetPath,
+    this.badgeLabel,
+    this.badgeIcon,
   });
 
   final Workspace workspace;
@@ -15,4 +18,7 @@ class LauncherApp {
   final String description;
   final IconData icon;
   final Color color;
+  final String assetPath;
+  final String? badgeLabel;
+  final IconData? badgeIcon;
 }

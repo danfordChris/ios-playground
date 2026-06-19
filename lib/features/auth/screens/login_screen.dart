@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:ipf_flutter_starter_pack/ipf_flutter_starter_pack.dart';
+import '../../../core/model/user_session.dart';
+import '../../../core/services/auth_service.dart';
 import '../../../core/theme/os_colors.dart';
 import '../../../shared/widgets/shared_widgets.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key, required this.onLogin});
 
-  final VoidCallback onLogin;
+  final ValueChanged<UserSession> onLogin;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -13,12 +16,13 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _email = TextEditingController(
-    text: 'erick@ipfsoftwares.com',
+    text: 'agathamkenge16@gmail.com',
   );
   final TextEditingController _password = TextEditingController(
-    text: 'password',
+    text: 'Agatha123',
   );
   bool _loading = false;
+  String? _error;
 
   @override
   void dispose() {
@@ -28,10 +32,42 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _submit() async {
-    if (_email.text.trim().isEmpty || _password.text.isEmpty) return;
-    setState(() => _loading = true);
-    await Future<void>.delayed(const Duration(milliseconds: 550));
-    if (mounted) widget.onLogin();
+    final email = _email.text.trim();
+    final password = _password.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      _showError('Please enter email and password');
+      return;
+    }
+
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
+
+    try {
+      final user = await AuthService.instance.login(
+        email: email,
+        password: password,
+      );
+
+      if (mounted) {
+        widget.onLogin(user);
+      }
+    } on Exception catch (e) {
+      if (mounted) {
+        setState(() => _error = e.toString().replaceAll('Exception: ', ''));
+        _showError(_error ?? 'Login failed');
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _loading = false);
+      }
+    }
+  }
+
+  void _showError(String message) {
+    Scenery.showError(message);
   }
 
   @override
@@ -62,21 +98,33 @@ class _LoginScreenState extends State<LoginScreen> {
                   ).textTheme.bodyMedium?.copyWith(color: OsColors.muted),
                 ),
                 const SizedBox(height: 28),
-                AppTextField(
-                  label: 'Email Address',
-                  hint: 'name@company.com',
-                  icon: Icons.mail_outline_rounded,
-                  controller: _email,
-                  keyboardType: TextInputType.emailAddress,
+                IgnorePointer(
+                  ignoring: _loading,
+                  child: Opacity(
+                    opacity: _loading ? 0.6 : 1.0,
+                    child: AppTextField(
+                      label: 'Email Address',
+                      hint: 'name@company.com',
+                      icon: Icons.mail_outline_rounded,
+                      controller: _email,
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 18),
-                AppTextField(
-                  label: 'Password',
-                  hint: 'password',
-                  icon: Icons.lock_outline_rounded,
-                  controller: _password,
-                  obscureText: true,
-                  trailingLabel: 'Forgot password?',
+                IgnorePointer(
+                  ignoring: _loading,
+                  child: Opacity(
+                    opacity: _loading ? 0.6 : 1.0,
+                    child: AppTextField(
+                      label: 'Password',
+                      hint: 'password',
+                      icon: Icons.lock_outline_rounded,
+                      controller: _password,
+                      obscureText: true,
+                      trailingLabel: 'Forgot password?',
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 24),
                 FilledActionButton(
@@ -86,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 22),
                 Text(
-                  'Protected by Company SSO. Need help? Contact IT Support.',
+                  'Protected by Company API. For demo, use test credentials.',
                   textAlign: TextAlign.center,
                   style: Theme.of(
                     context,

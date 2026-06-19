@@ -13,6 +13,11 @@ This file is the execution guide for AI coding agents working in this repository
 - Do not revert unrelated user changes in the worktree.
 - Always read and update the `memory/` directory to keep task state in sync across agent sessions. Refer to `memory/README.md` for the handoff protocol. This is mandatory for every session.
 
+## Workflow Authority
+
+- Canonical workflow policy: `ai/workflow-contract/spec/*`
+- Canonical validator: `python3 ai/workflow-contract/scripts/validate_workflow.py`
+
 ## Start Here
 
 Read these in order for general orientation:
@@ -20,11 +25,14 @@ Read these in order for general orientation:
 1. `memory/README.md` (Context & Handoff)
 2. `memory/progress.md` (Current Status)
 3. `CLAUDE.md`
-4. `lib/main.dart`
-5. `lib/root/app.dart`
-6. `lib/core/router/router.dart`
-7. `lib/shared/providers/providers.dart`
-8. `lib/services/api_manager.dart`
+4. `docs/README.md`
+5. `docs/implementation/README.md`
+6. `docs/design/features/ticketing.md`
+7. `lib/main.dart`
+8. `lib/root/app.dart`
+9. `lib/core/router/router.dart`
+10. `lib/shared/providers/providers.dart`
+11. `lib/services/api_manager.dart`
 
 Then read the feature-specific files you are about to modify:
 

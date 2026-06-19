@@ -37,6 +37,9 @@ dependencies:
 
   ipf_flutter_starter_pack:
     path: /Users/danfordchris/projects/iPF_Flutter_Starter_Pack.
+  flutter_svg: ^2.0.17
+  vibration: ^3.1.8
+  dio: ^5.4.0
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +65,7 @@ flutter:
 
   assets:
     - assets/figma/home/
+    - assets/launcher/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

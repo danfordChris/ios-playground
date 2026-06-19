@@ -20,6 +20,7 @@ class ModuleShell extends StatelessWidget {
     required this.onLogout,
     required this.onTabChanged,
     required this.onCreateTicket,
+    required this.onUpdateTicket,
   });
 
   final UserSession user;
@@ -30,6 +31,7 @@ class ModuleShell extends StatelessWidget {
   final VoidCallback onLogout;
   final ValueChanged<int> onTabChanged;
   final ValueChanged<Map<String, String>> onCreateTicket;
+  final ValueChanged<Map<String, String>> onUpdateTicket;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +65,21 @@ class ModuleShell extends StatelessWidget {
                 ),
                 Expanded(
                   child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 220),
+                    duration: const Duration(milliseconds: 300),
+                    transitionBuilder: (child, animation) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: ScaleTransition(
+                          scale: Tween<double>(begin: 0.95, end: 1.0).animate(
+                            CurvedAnimation(
+                              parent: animation,
+                              curve: Curves.easeOut,
+                            ),
+                          ),
+                          child: child,
+                        ),
+                      );
+                    },
                     child: Padding(
                       key: ValueKey(
                         '${workspace.name}-$activeIndex-${tickets.length}',
@@ -107,6 +123,7 @@ class ModuleShell extends StatelessWidget {
           activeIndex: index,
           tickets: tickets,
           onCreateTicket: onCreateTicket,
+          onUpdateTicket: onUpdateTicket,
         );
       case Workspace.launcher:
         return const SizedBox.shrink();
@@ -148,10 +165,10 @@ class ModuleShell extends StatelessWidget {
         ];
       case Workspace.ticketing:
         return const [
-          DockItem('Feed', Icons.confirmation_number_outlined),
+          DockItem('All', Icons.confirmation_number_outlined),
+          DockItem('Open', Icons.error_outline_rounded),
+          DockItem('Resolved', Icons.check_circle_outline_rounded),
           DockItem('New', Icons.add_circle_outline_rounded),
-          DockItem('Guides', Icons.auto_stories_outlined),
-          DockItem('Config', Icons.settings_outlined),
         ];
       default:
         return [];
@@ -169,7 +186,7 @@ class ModuleShell extends StatelessWidget {
       case Workspace.users:
         return 'System Users';
       case Workspace.ticketing:
-        return 'Support Desk';
+        return 'Ticketing';
       default:
         return 'Workspace';
     }

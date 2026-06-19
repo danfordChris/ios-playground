@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import '../../core/animations/widget_animations.dart';
 import '../../core/theme/os_colors.dart';
 
 class MeshScaffold extends StatelessWidget {
@@ -323,10 +324,12 @@ class _DockButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: Container(
+    return AnimatedButtonPress(
+      onPressed: onTap,
+      duration: const Duration(milliseconds: 100),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
         width: 48,
         height: 48,
         margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -336,17 +339,24 @@ class _DockButton extends StatelessWidget {
           boxShadow: isActive
               ? [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.1),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
+                    color: Colors.black.withValues(alpha: 0.15),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
                   ),
                 ]
               : null,
         ),
-        child: Icon(
-          item.icon,
-          color: isActive ? Colors.white : OsColors.muted,
-          size: 22,
+        child: AnimatedDefaultTextStyle(
+          duration: const Duration(milliseconds: 300),
+          style: TextStyle(
+            color: isActive ? Colors.white : OsColors.muted,
+            fontSize: 22,
+          ),
+          child: Icon(
+            item.icon,
+            color: isActive ? Colors.white : OsColors.muted,
+            size: 22,
+          ),
         ),
       ),
     );

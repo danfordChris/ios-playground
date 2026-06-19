@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'core/enum/workspace.dart';
 import 'core/model/user_session.dart';
 import 'core/theme/os_colors.dart';
-import 'features/auth/screens/login_screen.dart';
 import 'features/launcher/screens/launcher_screen.dart';
 import 'shared/data/mock_data.dart';
 import 'shared/widgets/module_shell.dart';
@@ -88,30 +87,26 @@ class IpfOSRoot extends StatefulWidget {
 }
 
 class _IpfOSRootState extends State<IpfOSRoot> {
-  UserSession? _user;
+  static const UserSession _dashboardUser = UserSession(
+    id: 'u-1',
+    name: 'Erick M',
+    email: 'erick@ipfsoftwares.com',
+    role: 'Super Admin',
+  );
+
+  UserSession _user = _dashboardUser;
   Workspace _workspace = Workspace.launcher;
   int _moduleTab = 0;
   final List<Map<String, String>> _tickets = List.of(MockData.tickets);
 
-  void _login() {
-    setState(() {
-      _user = const UserSession(
-        id: 'u1',
-        name: 'Erick M',
-        email: 'erick@ipfsoftwares.com',
-        role: 'Super Admin',
-      );
-      _workspace = Workspace.launcher;
-      _moduleTab = 0;
-    });
-  }
-
-  void _logout() {
-    setState(() {
-      _user = null;
-      _workspace = Workspace.launcher;
-      _moduleTab = 0;
-    });
+  Future<void> _logout() async {
+    if (mounted) {
+      setState(() {
+        _user = _dashboardUser;
+        _workspace = Workspace.launcher;
+        _moduleTab = 0;
+      });
+    }
   }
 
   void _openWorkspace(Workspace workspace) {
@@ -127,28 +122,48 @@ class _IpfOSRootState extends State<IpfOSRoot> {
     setState(() => _tickets.insert(0, ticket));
   }
 
+  void _updateTicket(Map<String, String> ticket) {
+    setState(() {
+      final index = _tickets.indexWhere((item) => item['id'] == ticket['id']);
+      if (index == -1) return;
+      _tickets[index] = ticket;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = _user;
-    if (user == null) {
-      return LoginScreen(onLogin: _login);
-    }
+    Widget currentScreen;
+
     if (_workspace == Workspace.launcher) {
-      return LauncherScreen(
+      currentScreen = LauncherScreen(
         user: user,
         onLogout: _logout,
         onOpenWorkspace: _openWorkspace,
       );
+    } else {
+      currentScreen = ModuleShell(
+        user: user,
+        workspace: _workspace,
+        activeIndex: _moduleTab,
+        tickets: _tickets,
+        onBackToLauncher: () => _openWorkspace(Workspace.launcher),
+        onLogout: _logout,
+        onTabChanged: _setTab,
+        onCreateTicket: _createTicket,
+        onUpdateTicket: _updateTicket,
+      );
     }
-    return ModuleShell(
-      user: user,
-      workspace: _workspace,
-      activeIndex: _moduleTab,
-      tickets: _tickets,
-      onBackToLauncher: () => _openWorkspace(Workspace.launcher),
-      onLogout: _logout,
-      onTabChanged: _setTab,
-      onCreateTicket: _createTicket,
+
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 300),
+      transitionBuilder: (child, animation) {
+        return FadeTransition(opacity: animation, child: child);
+      },
+      child: KeyedSubtree(
+        key: ValueKey<String>('screen-${user.id}-${_workspace.name}'),
+        child: currentScreen,
+      ),
     );
   }
 }

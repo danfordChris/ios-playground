@@ -5,6 +5,14 @@ This document explains the workflow, architecture, and development patterns used
 ## 1. Core Philosophy: AI-First & Directive
 The project is built using an "AI-First" approach, where **AGENTS.md** and **CLAUDE.md** act as the "System Prompt" or "Execution Contract". 
 
+The workflow contract is now mirrored in `docs/`, with ticketing as the
+current active focus:
+
+- `docs/README.md`
+- `docs/design/features/ticketing.md`
+- `docs/implementation/project.md`
+- `docs/implementation/tasks/ticketing.md`
+
 ### The "System Prompt" as a Workflow Engine
 - **AGENTS.md**: This file is not just documentation; it is a **directive guide** for AI agents. It sets the "Primary Rules" (e.g., base changes on repo state, don't guess) and defines the "Architecture Contract". When an agent starts, it reads this file to understand its constraints and expected behavior.
 - **CLAUDE.md**: Provides the **operational context**. it contains the specific commands (bash), architecture summaries, and a mapping of the iPF Starter Pack classes to their roles. It bridges the gap between high-level rules and low-level code.
@@ -80,10 +88,16 @@ The primary goal is recreating the **mobile view** of a source React/Vite web ap
 5. **UI Implementation**: Build the screens using `ModuleShell` to maintain navigation consistency.
 6. **Verification**: Run `flutter analyze` and `flutter test` to ensure no regressions.
 
+For documentation work, keep the `docs/` tree aligned with the contract:
+
+- `docs/design/` contains approved truth.
+- `docs/implementation/` contains execution planning only.
+- `docs/changes/proposed/` contains unresolved behavior and open questions.
+
 ---
 
 ## 6. Architecture Contract
-We strictly follow this path for data and UI:
+We strictly follow this path for data    and UI:
 
 **Standard Path:**
 `Widget/Screen` (UI) -> `Provider` (State) -> `Service` (Business Logic) -> `APIManager` (Network) -> `Model` (Data)

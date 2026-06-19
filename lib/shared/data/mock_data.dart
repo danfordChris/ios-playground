@@ -225,7 +225,12 @@ class MockData {
       'status': 'Open',
       'category': 'Bug',
       'reporter': 'Sarah Jenkins',
-      'assignee': '',
+      'reporterId': 'u-2',
+      'reporterName': 'Sarah Jenkins',
+      'assigneeId': '',
+      'assigneeName': '',
+      'createdAt': '2026-06-19T07:30:00Z',
+      'updatedAt': '2026-06-19T07:30:00Z',
     },
     {
       'id': 't-2',
@@ -236,18 +241,12 @@ class MockData {
       'status': 'In Progress',
       'category': 'IT',
       'reporter': 'Erick',
-      'assignee': 'IT Support',
-    },
-    {
-      'id': 't-2',
-      'title': 'Need a new laptop for the new hire',
-      'description':
-          'We have a new developer starting next Monday. Need a MacBook Pro M3 provisioned.',
-      'priority': 'Medium',
-      'status': 'In Progress',
-      'category': 'IT',
-      'reporter': 'Erick',
-      'assignee': 'IT Support',
+      'reporterId': 'u-1',
+      'reporterName': 'Erick',
+      'assigneeId': 'u-3',
+      'assigneeName': 'IT Support',
+      'createdAt': '2026-06-18T09:00:00Z',
+      'updatedAt': '2026-06-18T18:00:00Z',
     },
     {
       'id': 't-3',
@@ -258,7 +257,64 @@ class MockData {
       'status': 'Resolved',
       'category': 'Feature',
       'reporter': 'Alex Smith',
-      'assignee': 'Erick',
+      'reporterId': 'u-4',
+      'reporterName': 'Alex Smith',
+      'assigneeId': 'u-1',
+      'assigneeName': 'Erick',
+      'createdAt': '2026-06-14T10:15:00Z',
+      'updatedAt': '2026-06-18T11:45:00Z',
+    },
+    {
+      'id': 't-4',
+      'title': 'Provision VPN access for the finance team',
+      'description':
+          'Finance users need VPN access to the secure reporting environment before the next review cycle.',
+      'priority': 'Critical',
+      'status': 'Closed',
+      'category': 'Support',
+      'reporter': 'Jane Doe',
+      'reporterId': 'u-5',
+      'reporterName': 'Jane Doe',
+      'assigneeId': 'u-3',
+      'assigneeName': 'IT Support',
+      'createdAt': '2026-06-10T08:45:00Z',
+      'updatedAt': '2026-06-12T16:20:00Z',
+    },
+  ];
+
+  static const ticketUsers = [
+    {'id': 'u-1', 'name': 'Erick'},
+    {'id': 'u-2', 'name': 'Sarah Jenkins'},
+    {'id': 'u-3', 'name': 'IT Support'},
+    {'id': 'u-4', 'name': 'Alex Smith'},
+    {'id': 'u-5', 'name': 'Jane Doe'},
+  ];
+
+  static const ticketComments = [
+    {
+      'id': 'c-1',
+      'ticketId': 't-2',
+      'authorId': 'u-3',
+      'authorName': 'IT Support',
+      'content': 'The laptop has been ordered and should arrive by Thursday.',
+      'createdAt': '2026-06-18T10:30:00Z',
+    },
+    {
+      'id': 'c-2',
+      'ticketId': 't-3',
+      'authorId': 'u-1',
+      'authorName': 'Erick',
+      'content': 'Implemented in the latest release. Closing ticket.',
+      'createdAt': '2026-06-18T11:45:00Z',
+    },
+    {
+      'id': 'c-3',
+      'ticketId': 't-1',
+      'authorId': 'u-2',
+      'authorName': 'Sarah Jenkins',
+      'content':
+          'Any update on the access issue? This is blocking PMO reporting.',
+      'createdAt': '2026-06-19T08:05:00Z',
     },
   ];
 
@@ -380,12 +436,27 @@ class MockData {
       'status': 'Archived',
       'selections': [
         {'day': 'Monday', 'mainId': 'm1', 'sideId': 's1', 'status': 'Consumed'},
-        {'day': 'Tuesday', 'mainId': 'm2', 'sideId': 's2', 'status': 'Consumed'},
-        {'day': 'Wednesday', 'mainId': 'm5', 'sideId': 's1', 'status': 'Consumed'},
-        {'day': 'Thursday', 'mainId': 'm3', 'sideId': 's3', 'status': 'Consumed'},
+        {
+          'day': 'Tuesday',
+          'mainId': 'm2',
+          'sideId': 's2',
+          'status': 'Consumed',
+        },
+        {
+          'day': 'Wednesday',
+          'mainId': 'm5',
+          'sideId': 's1',
+          'status': 'Consumed',
+        },
+        {
+          'day': 'Thursday',
+          'mainId': 'm3',
+          'sideId': 's3',
+          'status': 'Consumed',
+        },
         {'day': 'Friday', 'mainId': 'm6', 'sideId': 's4', 'status': 'Consumed'},
-      ]
-    }
+      ],
+    },
   ];
 
   static const currentPlan = {
@@ -398,7 +469,7 @@ class MockData {
       {'day': 'Wednesday', 'mainId': 'm3', 'sideId': 's1', 'status': 'Pending'},
       {'day': 'Thursday', 'mainId': 'm2', 'sideId': 's5', 'status': 'Pending'},
       {'day': 'Friday', 'mainId': 'm6', 'sideId': 's1', 'status': 'Pending'},
-    ]
+    ],
   };
 
   static const nextWeekPlan = {
@@ -411,7 +482,7 @@ class MockData {
       {'day': 'Wednesday', 'mainId': 'm5', 'sideId': 's3', 'status': 'Pending'},
       {'day': 'Thursday', 'mainId': 'm6', 'sideId': 's1', 'status': 'Pending'},
       {'day': 'Friday', 'mainId': null, 'sideId': null, 'status': 'Pending'},
-    ]
+    ],
   };
 
   static const teamMeals = [

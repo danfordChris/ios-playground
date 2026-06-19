@@ -42,13 +42,26 @@ flow.
 1. Auth/login (Completed)
 2. Launcher/home (Completed)
 3. Meals (Completed)
-4. My tasks (In Progress)
-5. Project management (In Progress)
-6. Ticketing (In Progress)
+4. Ticketing (Current focus)
+5. My tasks (In Progress)
+6. Project management (In Progress)
 7. User management (In Progress)
 
 This order starts with navigation and high-frequency operational surfaces, then
 fills out the remaining modules.
+
+## Phase 3 Ticketing Notes
+
+- Use the workflow-contract docs structure under `docs/` for the ticketing
+  implementation plan.
+- Keep ticketing scope limited to the existing mobile surface and local mock
+  data until an API contract is introduced.
+- Treat auth as settled for now; do not re-open login/session work while
+  ticketing is the active module.
+- Current Flutter ticketing shape: All/Open/Resolved/New tabs, searchable list,
+  and a detail bottom sheet that mutates local state.
+- Startup currently bypasses auth and lands on the launcher dashboard; keep that
+  as a pending follow-up rather than reintroducing login immediately.
 
 ## Phase 4: Data Flow
 
@@ -75,4 +88,3 @@ fills out the remaining modules.
 - Check for overflow, clipped text, missing routes, blank screens, broken state,
   and color mismatches.
 - Record verification results in `memory/progress.md`.
-

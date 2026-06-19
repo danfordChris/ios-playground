@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../core/enum/workspace.dart';
 import '../../../core/model/user_session.dart';
 import '../../../core/theme/os_colors.dart';
@@ -18,45 +19,59 @@ class LauncherScreen extends StatelessWidget {
   final VoidCallback onLogout;
   final ValueChanged<Workspace> onOpenWorkspace;
 
-  @override
-  Widget build(BuildContext context) {
-    final apps = <LauncherApp>[
+  List<LauncherApp> _apps() {
+    return [
       LauncherApp(
         workspace: Workspace.meals,
         name: 'iPF Meals',
         description: 'Daily menu and dietary preferences',
-        icon: Icons.local_cafe_outlined,
+        icon: Icons.restaurant_menu_rounded,
         color: OsColors.orange,
+        assetPath: 'assets/launcher/meal_plan.svg',
+        badgeLabel: 'COMING SOON',
+        badgeIcon: Icons.lock_outline_rounded,
       ),
       LauncherApp(
         workspace: Workspace.projects,
         name: 'PMO',
         description: 'Portfolio, resources and PMO',
-        icon: Icons.business_center_outlined,
+        icon: Icons.layers_rounded,
         color: OsColors.blue,
+        assetPath: 'assets/launcher/asset_management.svg',
       ),
       LauncherApp(
         workspace: Workspace.tasks,
         name: 'My Tasks',
         description: 'Track your active assignments',
-        icon: Icons.check_box_outlined,
+        icon: Icons.task_alt_rounded,
         color: OsColors.green,
+        assetPath: 'assets/launcher/tasks.svg',
       ),
       LauncherApp(
         workspace: Workspace.users,
-        name: 'User Management',
+        name: 'My Workplace',
+        // name: 'User Management',
         description: 'Directory, roles and security',
-        icon: Icons.groups_2_outlined,
+        icon: Icons.groups_rounded,
         color: OsColors.purple,
+        assetPath: 'assets/launcher/leave_management.svg',
       ),
       LauncherApp(
         workspace: Workspace.ticketing,
         name: 'Ticketing',
         description: 'Internal support and issue tracking',
-        icon: Icons.confirmation_number_outlined,
+        icon: Icons.confirmation_number_rounded,
         color: OsColors.red,
+        assetPath: 'assets/launcher/ticketing.svg',
+        badgeLabel: 'COMING SOON',
+        badgeIcon: Icons.lock_outline_rounded,
       ),
     ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final apps = _apps();
 
     return MeshScaffold(
       child: SafeArea(
@@ -108,13 +123,24 @@ class LauncherScreen extends StatelessWidget {
                   ).textTheme.bodyLarge?.copyWith(color: OsColors.muted),
                 ),
                 const SizedBox(height: 32),
-                for (final app in apps) ...[
-                  LauncherCard(
-                    app: app,
-                    onTap: () => onOpenWorkspace(app.workspace),
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: 1.1,
                   ),
-                  const SizedBox(height: 16),
-                ],
+                  itemCount: apps.length,
+                  itemBuilder: (context, index) {
+                    final app = apps[index];
+                    return LauncherCard(
+                      app: app,
+                      onTap: () => onOpenWorkspace(app.workspace),
+                    );
+                  },
+                ),
               ],
             ),
           ],

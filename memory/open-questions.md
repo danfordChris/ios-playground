@@ -10,4 +10,6 @@
   connected through this repo's `APIManager` pattern later?
 - Should generated iPF model/repository infrastructure be used for local data,
   or should the template keep plain feature-local Dart models?
-
+- Should `ai/workflow-contract` be adopted fully in this repo by replacing the
+  existing `.claude/skills` directory with the workflow-contract symlink
+  layout, or should the submodule stay present without running its init step?
