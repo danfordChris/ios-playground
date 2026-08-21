@@ -168,6 +168,32 @@
 - `flutter analyze` still reports pre-existing warnings outside the ticketing
   changes, but no new ticketing-specific analyzer errors were introduced.
 
+## 2026-06-19 Ticketing Source Parity Pass
+
+### Completed
+
+- Re-analysed the source ticketing flow in `/Users/danfordchris/Downloads/ipf-os-asset-management`:
+  - role-aware visibility rules for privileged users vs regular users
+  - All/Open/Resolved/New navigation model
+  - searchable register with priority filtering
+  - ticket detail workflow with live status changes, assignee updates, comments,
+    and activity history
+  - restricted HR ticket handling with internal notes
+- Upgraded the Flutter ticketing screen to a more source-like mobile experience:
+  - richer summary cards and ticket metrics
+  - responsive list/grid layout for mobile and wider windows
+  - cleaner ticket cards with department, visibility, comment count, and source-like metadata
+  - enhanced bottom-sheet detail view with quick actions, live comments, and activity timeline
+  - persistent comments and activity history encoded into the ticket map so updates survive while the app is running
+- Wired the signed-in user and role through `AppRoot` and `ModuleShell` so ticket permissions can react to session context.
+- Expanded the ticket mock data with SLA, department, visibility, and restricted HR examples.
+
+### Verification
+
+- `flutter analyze lib/features/ticketing/screens/ticketing_screen.dart lib/shared/widgets/module_shell.dart lib/app_root.dart lib/shared/data/mock_data.dart`
+  passes.
+- `flutter test` passes.
+
 ## 2026-06-19 Ticketing Docs Alignment
 
 ### Completed

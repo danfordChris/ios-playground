@@ -147,6 +147,8 @@ class _IpfOSRootState extends State<IpfOSRoot> {
         workspace: _workspace,
         activeIndex: _moduleTab,
         tickets: _tickets,
+        currentUserName: user.name,
+        currentRole: user.role,
         onBackToLauncher: () => _openWorkspace(Workspace.launcher),
         onLogout: _logout,
         onTabChanged: _setTab,

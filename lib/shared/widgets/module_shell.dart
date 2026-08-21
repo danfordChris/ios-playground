@@ -16,6 +16,8 @@ class ModuleShell extends StatelessWidget {
     required this.workspace,
     required this.activeIndex,
     required this.tickets,
+    required this.currentUserName,
+    required this.currentRole,
     required this.onBackToLauncher,
     required this.onLogout,
     required this.onTabChanged,
@@ -27,6 +29,8 @@ class ModuleShell extends StatelessWidget {
   final Workspace workspace;
   final int activeIndex;
   final List<Map<String, String>> tickets;
+  final String currentUserName;
+  final String currentRole;
   final VoidCallback onBackToLauncher;
   final VoidCallback onLogout;
   final ValueChanged<int> onTabChanged;
@@ -122,6 +126,8 @@ class ModuleShell extends StatelessWidget {
         return TicketingScreen(
           activeIndex: index,
           tickets: tickets,
+          currentUserName: currentUserName,
+          currentRole: currentRole,
           onCreateTicket: onCreateTicket,
           onUpdateTicket: onUpdateTicket,
         );
